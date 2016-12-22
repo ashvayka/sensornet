@@ -19,21 +19,21 @@ conn = {
     'server': 'demo.thingsboard.io',              # IP or hostname of manager    
     'port': 1883,                                 # MQTT server port number
     'method': "http",                             # Method used to send data to TB server
-    'authkey': 'TujecVEQb6y3rSaJ7gbL',           # Auth Key for development laptop
+    'authkey': '[REDACTED]',           # Auth Key for development laptop
     'attributes': 'v1/devices/me/attributes',     # Topic where device attributes are published
     'telemetry': 'v1/devices/me/telemetry'        # Topic where device telemetry is published
     }
 
 attr = {
     'platform': "Raspberry Pi 3",
-    'name': 'Lab Monitor-Test',                       # Name of the sensor, descriptive
-    'location': 'Iselin, NJ, PA',                   # Common name of location
-    'address': '100 Wood Drive, Iselin, NJ',                 # Street address where device is located
-    'lattitude': 40.563362,                      # Used for map overlay
-    'longitude': -74.329166,                      # used for map overlay
-    'contact': 'Bob Perciaccante',                    # Primary contact responsible for area being monitored
-    'contact_email': 'bperciac@cisco.com',            # Primary contact email address
-    'contact_phone': '610-454-8738',               # primary contact phone
+    'name': 'Lab Monitor',                       # Name of the sensor, descriptive
+    'location': 'Memphis, TN',                   # Common name of location
+    'address': '1313 Mockingbird Lane',                 # Street address where device is located
+    'lattitude': 40.748441,                      # Used for map overlay
+    'longitude': -73.985664,                      # used for map overlay
+    'contact': 'Your Name Here',                    # Primary contact responsible for area being monitored
+    'contact_email': 'youremail@tld.foo',            # Primary contact email address
+    'contact_phone': '800-555-12128',               # primary contact phone
     'alerttemp': 75,
     'alarmTemp': 80
     }
