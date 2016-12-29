@@ -10,8 +10,8 @@
 #    DiskTotal:    Total amount of disk installed
 #    RAMTotal:     Total amount of RAM installed
 #    Name:         Common name of device
-#    Location:     Location information as definec in Me attributes
-#    PlatformL     Hardware platform information from Me attributes
+#    Location:     Location information as defined in 'me' attributes
+#    Platform      Hardware platform information from 'me' attributes
 #    Interface(s)  Interface name and IP addresses of interfaces installed
 #
 # Publishes the following telemetry values:
@@ -42,8 +42,8 @@ conn = {
 
 # Combine some of the above variables for use in later processing
 url = {
-    'attr': conn['method'] + '://' + conn['server'] +'/api/v1/'+conn['authkey']+'/attributes',
-    'tele': conn['method'] + '://' + conn['server'] +'/api/v1/'+conn['authkey']+'/telemetry',
+    'attributes': conn['method'] + '://' + conn['server'] +'/api/v1/'+conn['authkey']+'/attributes',
+    'telemetry': conn['method'] + '://' + conn['server'] +'/api/v1/'+conn['authkey']+'/telemetry',
     }
 http_headers = {'Content-Type': 'application/json'}
 
@@ -93,8 +93,8 @@ def main():
         except:
             attributes[x] = "none"
 
-    r_tele = requests.post(url['tele'], data=json.dumps(message), headers=http_headers)
-    r_attr = requests.post(url['attr'], data=json.dumps(attributes), headers=http_headers)
+    requests.post(url['telemetry'], data=json.dumps(message), headers=http_headers)
+    requests.post(url['attributes'], data=json.dumps(attributes), headers=http_headers)
 
     
 if __name__ == '__main__':
