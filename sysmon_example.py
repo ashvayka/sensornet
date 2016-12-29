@@ -1,38 +1,49 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from __future__ import division
+
 ####################################################################
-# Script to gather information on the device gathering sensor
-#     information to help prevent failures ahead of time
+# Script to gather system usage information to monitor for resource
+#    limitations and to allow for the alerting within the Thingsboard
+#    Rules engine, if configured to do so.
 #
+# Publishes the following client attributes:
+#    DiskTotal:    Total amount of disk installed
+#    RAMTotal:     Total amount of RAM installed
+#    Name:         Common name of device
+#    Location:     Location information as definec in Me attributes
+#    PlatformL     Hardware platform information from Me attributes
+#    Interface(s)  Interface name and IP addresses of interfaces installed
+#
+# Publishes the following telemetry values:
+#    CPUTemp:      Temp of the CPU as reported by the systems
+#    CPUUsage:     Percentage of CPU used
+#    RAMUsed:      Percentage of RAM used
+#    DiskUsed:     Percentage of Disk used
 ####################################################################
-#import config as cfg         # Bring in shared configuration file
-#import common as com         # Bring in shared functions file
-####################################################################
-from subprocess import PIPE, Popen
-import sys, random
-import time
-import psutil
-import netifaces as ni
-import requests
-import json
+
+from subprocess import PIPE, Popen     # Used for system metric gathering
+import time                            # used in calculating sleep timer
+import psutil                          # Used for system metric gathering
+import netifaces as ni                 # Used to gether interface informatioin
+import requests                        # Used for creating HTTP sessions to ThingsBoard server
+import json                            # Used for data formatting
 
 me = {
-    'version': 1.2,
-    'Platform': "Raspberry Pi Zero",
-    'Name': 'Lab Monitor',                       # Name of the sensor, descriptive
+    'Platform': "Raspberry Pi Zero",            # Describe the hardware platform information is gathered from
+    'Name': 'Lab Monitor',                      # Name of the sensor, descriptive
     'Location': 'New York, NY'                  # Common name of location
     }
 
 conn = {
     'server': '[YOUR SERVER HERE]',              # IP or hostname of manager    
-    'method': "http",                             # Method used to send data to TB server
-    'authkey': '[YOUR AUTH KEY HERE]'             # Auth Key for "temp" device
+    'method': "http",                            # Method used to send data to TB server
+    'authkey': '[YOUR AUTH KEY HERE]'            # Auth Key for your device
     }
 
+# Combine some of the above variables for use in later processing
 url = {
-    'attr': 'http://' + conn['server'] +'/api/v1/'+conn['authkey']+'/attributes',
-    'tele': 'http://' + conn['server'] +'/api/v1/'+conn['authkey']+'/telemetry',
+    'attr': conn['method'] + '://' + conn['server'] +'/api/v1/'+conn['authkey']+'/attributes',
+    'tele': conn['method'] + '://' + conn['server'] +'/api/v1/'+conn['authkey']+'/telemetry',
     }
 http_headers = {'Content-Type': 'application/json'}
 
@@ -62,10 +73,10 @@ def main():
     disk_percent_used = disk.percent
    
     message = {
-	'CPUTemp': cpu_temperature,
-	'CPUUsage': cpu_usage,
-	'RAMUsed': ram_percent_used,
-	'DiskUsed': disk_percent_used
+	'CPU Temp': cpu_temperature,
+	'CPU Usage': cpu_usage,
+	'RAM Used': ram_percent_used,
+	'Disk Used': disk_percent_used
         }
 
     attributes = me
@@ -88,6 +99,3 @@ def main():
     
 if __name__ == '__main__':
     main()
-
-
-
